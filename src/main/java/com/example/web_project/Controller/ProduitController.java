@@ -1,3 +1,4 @@
+
 package com.example.web_project.Controller;
 import java.util.List;
 import javax.validation.Valid;
@@ -27,7 +28,16 @@ public class ProduitController {
         Produit savedProduit = produitService.saveProduit(produit);
         return new ResponseEntity<>(savedProduit, HttpStatus.CREATED);
     }
-
+    
+   @GetMapping("/{id}")
+    public ResponseEntity<Produit> getProduitById(@PathVariable("id") Long id) {
+        Produit produit = produitService.getProduitById(id);
+        if (produit != null) {
+            return new ResponseEntity<>(produit, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produit> updateProduit(@PathVariable("id") Long id, @Valid @RequestBody Produit produit) {
@@ -38,5 +48,12 @@ public class ProduitController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+  
+   @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduit(@PathVariable("id") Long id) {
+        produitService.deleteProduit(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
+

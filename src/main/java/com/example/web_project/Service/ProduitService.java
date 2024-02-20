@@ -1,3 +1,4 @@
+
 package com.example.web_project.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class ProduitService {
     public Produit saveProduit(Produit produit) {
         return produitRepository.save(produit);
     }
+  
 
     public Produit updateProduit(Long id, Produit newProduit) {
         Optional<Produit> existingProduitOptional = produitRepository.findById(id);
@@ -35,7 +37,12 @@ public class ProduitService {
             return null;
         }
     }
+  
+    public void deleteProduit(Long id) {
+        produitRepository.deleteById(id);
+    }
 
 
 }
+
 
