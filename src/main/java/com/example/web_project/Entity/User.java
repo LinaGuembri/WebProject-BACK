@@ -1,46 +1,41 @@
 package com.example.web_project.Entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUser;
-    private String fname;
-    private String lname;
+    private Long id;
+    private String firstname;
+    private String lastname;
     private String email;
     private String telephone;
-    private String pwd;
-    private Role role;
+    private String password;
 
-    // Getters and setters
-    public Long getIdUser() {
-        return idUser;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
+    public void setIdr(Long id) {
+        this.id = id;
     }
 
-    public String getFname() {
-        return fname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public void setFirstname(String fname) {
+        this.firstname = firstname;
     }
 
-    public String getLname() {
-        return lname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -59,20 +54,11 @@ public class User {
         this.telephone = telephone;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
-

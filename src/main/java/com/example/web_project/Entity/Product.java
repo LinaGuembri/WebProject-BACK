@@ -1,43 +1,47 @@
 package com.example.web_project.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import javax.persistence.*;
 
 @Entity
-public class Produit {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "productReference")
+public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String refProduit;
-    private String nom;
+    @Column(length = 50, unique = true)
+    private String productReference;
+    private String name;
     private String description;
     private String image;
-    private float prix;
-    private int quantite;
+    private double price;
+    private String color;
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIdentityReference(alwaysAsId = true)
+    private Category category;
+
+    public String getProductReference() {
+        return productReference;
     }
 
-    public String getRefProduit() {
-        return refProduit;
+    public void setProductReference(String productReference) {
+        this.productReference = productReference;
     }
 
-    public void setRefProduit(String refProduit) {
-        this.refProduit = refProduit;
+    public String getName() {
+        return name;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -56,19 +60,35 @@ public class Produit {
         this.image = image;
     }
 
-    public float getPrix() {
-        return prix;
+    public double getPrice() {
+        return price;
     }
 
-    public void setPrix(float prix) {
-        this.prix = prix;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public int getQuantite() {
-        return quantite;
+    public String getColor() {
+        return color;
     }
 
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
