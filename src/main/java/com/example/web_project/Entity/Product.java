@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "productReference")
@@ -14,7 +15,11 @@ public class Product {
     private String productReference;
     private String name;
     private String description;
+
     private String image;
+
+
+
     private double price;
     private String color;
 
@@ -59,6 +64,8 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
+
+
 
     public double getPrice() {
         return price;
