@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -24,34 +23,45 @@ public class CartService {
     private UserRepository userDao;
 
 
-    public void deleteCartItem(Long cartItemId) {
-        cartDao.deleteById(cartItemId);
-    }
 
     public Cart addToCart(String productId, Long userId) {
         Product product = productDao.findById(productId).orElse(null);
-        User user = userDao.findById(userId).orElse(null); // Retrieve existing user
+        User user = userDao.findById(userId).orElse(null);
 
         if (product == null || user == null) {
-            // Handle product or user not found
             return null;
         }
 
         List<Cart> carts = cartDao.findByUser(user);
-
-        // Choose one cart or handle multiple carts as needed
         Cart cart;
         if (!carts.isEmpty()) {
-            cart = carts.get(0); // Choose the first cart for simplicity
+            cart = carts.get(0);
         } else {
-            cart = new Cart(user); // Create a new cart if no cart exists for the user
+            cart = new Cart(user);
         }
-
-        // Add the product to the cart
         cart.addProduct(product);
-
-        // Save the cart
         return cartDao.save(cart);
+    }
+
+    public void deleteCartItem(Long cartItemId) {
+        cartDao.deleteById(cartItemId);
+    }
+
+    public void removeProductFromCart(Long cartId, String productId) {
+        Cart cart = cartDao.findById(cartId).orElse(null);
+        if (cart != null) {
+            Product productToRemove = null;
+            for (Product product : cart.getProducts()) {
+                if (product.getProductReference().equals(productId)) {
+                    productToRemove = product;
+                    break;
+                }
+            }
+            if (productToRemove != null) {
+                cart.removeProduct(productToRemove);
+                cartDao.save(cart);
+            }
+        }
     }
 
 }

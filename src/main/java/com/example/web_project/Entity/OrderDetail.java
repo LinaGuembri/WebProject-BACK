@@ -13,7 +13,7 @@ public class OrderDetail {
     private String orderAlternateContactNumber;
     private String orderStatus;
     private Double orderAmount;
-    @OneToOnegi
+    @OneToOne
     private Product product;
     @OneToOne
     private User user;
