@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CartService {
@@ -54,14 +55,15 @@ public class CartService {
         Cart cart = cartDao.findById(cartId).orElse(null);
         if (cart != null) {
             Product productToRemove = null;
-            for (Product product : cart.getProducts()) {
+            for (Map.Entry<Product, Integer> entry : cart.getProductQuantityMap().entrySet()) {
+                Product product = entry.getKey();
                 if (product.getProductReference().equals(productId)) {
                     productToRemove = product;
                     break;
                 }
             }
             if (productToRemove != null) {
-                cart.removeProduct(productToRemove);
+                cart.getProductQuantityMap().remove(productToRemove);
                 cartDao.save(cart);
             }
         }
