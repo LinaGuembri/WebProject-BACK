@@ -86,4 +86,12 @@ public class Cart {
             productQuantityMap.put(product, quantity);
         }
     }
+
+    public Map<Product, Integer> getProductQuantityMap() {
+        return productQuantityMap;
+    }
+
+    public void setProductQuantityMap(Map<Product, Integer> productQuantityMap) {
+        this.productQuantityMap = productQuantityMap;
+    }
 }
