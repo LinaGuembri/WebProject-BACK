@@ -23,29 +23,12 @@ public class CartService {
     @Autowired
     private UserRepository userDao;
 
-    public void deleteCartItem(Long cartId) {
-        cartDao.deleteById(cartId);
+
+    public void deleteCartItem(Long cartItemId) {
+        cartDao.deleteById(cartItemId);
     }
-    /*
-    public Cart addToCart(String productId, User user) {
-        Product product = productDao.findById(productId).get();
 
-
-        List<Cart> cartList = cartDao.findByUser(user);
-        List<Cart> filteredList = cartList.stream().filter(x -> x.getProduct().getProductReference() == productId).collect(Collectors.toList());
-
-        if(filteredList.size() > 0) {
-            return null;
-        }
-
-        if(product != null && user != null) {
-            Cart cart = new Cart(product, user);
-            return cartDao.save(cart);
-        }
-
-        return null;
-    } */
-    public Cart addToCart( Long userId, String productId) {
+    public Cart addToCart(String productId, Long userId) {
         Product product = productDao.findById(productId).orElse(null);
         User user = userDao.findById(userId).orElse(null); // Retrieve existing user
 
@@ -54,16 +37,21 @@ public class CartService {
             return null;
         }
 
-        List<Cart> existingCartItems = cartDao.findByUserAndProduct(user, product); // Corrected parameter order
-        if (!existingCartItems.isEmpty()) {
-            return existingCartItems.get(0);
+        List<Cart> carts = cartDao.findByUser(user);
+
+        // Choose one cart or handle multiple carts as needed
+        Cart cart;
+        if (!carts.isEmpty()) {
+            cart = carts.get(0); // Choose the first cart for simplicity
+        } else {
+            cart = new Cart(user); // Create a new cart if no cart exists for the user
         }
 
-        Cart cart = new Cart(product, user);
+        // Add the product to the cart
+        cart.addProduct(product);
+
+        // Save the cart
         return cartDao.save(cart);
     }
 
-    public List<Cart> getCartDetails(User user) {
-        return cartDao.findByUser(user);
-    }
 }

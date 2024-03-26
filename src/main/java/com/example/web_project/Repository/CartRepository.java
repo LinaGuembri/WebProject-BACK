@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface CartRepository extends CrudRepository<Cart, Long > {
     public List<Cart> findByUser(User user);
-    List<Cart> findByUserAndProduct(  User user, Product product);
+
 
 
 
