@@ -12,12 +12,6 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long cartId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "cart_product",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products = new ArrayList<>();
     @OneToOne
     private User user;
 
@@ -54,27 +48,12 @@ public class Cart {
 
 
 
-    public void addProduct(Product product) {
-        this.products.add(product);
-        product.getCarts().add(this);
-    }
 
-    public void removeProduct(Product product) {
-        this.products.remove(product);
-        product.getCarts().remove(this);
-    }
 
     public Cart(User user) {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
 
     public void addProductWithQuantity(Product product, int quantity) {
         // Update quantity if the product already exists in the map
