@@ -34,7 +34,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonIdentityReference(alwaysAsId = true)
     private Category category;
-    
+
 
     public String getProductReference() {
         return productReference;
