@@ -2,7 +2,9 @@ package com.example.web_project.Entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Cart {
@@ -18,6 +20,13 @@ public class Cart {
     private List<Product> products = new ArrayList<>();
     @OneToOne
     private User user;
+
+    @ElementCollection
+    @CollectionTable(name = "cart_product_mapping",
+            joinColumns = @JoinColumn(name = "cart_id"))
+    @MapKeyJoinColumn(name = "product_id")
+    @Column(name = "quantity")
+    private Map<Product, Integer> productQuantityMap = new HashMap<>();
 
 
 
@@ -65,5 +74,16 @@ public class Cart {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void addProductWithQuantity(Product product, int quantity) {
+        // Update quantity if the product already exists in the map
+        if (productQuantityMap.containsKey(product)) {
+            int existingQuantity = productQuantityMap.get(product);
+            productQuantityMap.put(product, existingQuantity + quantity);
+        } else {
+            // Add the product with the specified quantity
+            productQuantityMap.put(product, quantity);
+        }
     }
 }

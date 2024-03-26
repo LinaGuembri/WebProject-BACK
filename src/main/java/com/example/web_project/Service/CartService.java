@@ -25,7 +25,7 @@ public class CartService {
 
 
 
-    public Cart addToCart(String productId, Long userId) {
+    public Cart addToCart(String productId, Long userId, int quantity) {
         Product product = productDao.findById(productId).orElse(null);
         User user = userDao.findById(userId).orElse(null);
 
@@ -40,7 +40,9 @@ public class CartService {
         } else {
             cart = new Cart(user);
         }
-        cart.addProduct(product);
+        //cart.addProduct(product);
+        // Update or add the product with quantity to the cart
+        cart.addProductWithQuantity(product, quantity);
         return cartDao.save(cart);
     }
 
