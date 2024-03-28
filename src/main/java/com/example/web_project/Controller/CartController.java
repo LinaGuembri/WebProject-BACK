@@ -2,6 +2,7 @@ package com.example.web_project.Controller;
 
 import com.example.web_project.Entity.Cart;
 import com.example.web_project.Entity.Product;
+import com.example.web_project.Entity.ProductWithQuantityDto;
 import com.example.web_project.Service.CartService;
 import com.example.web_project.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/cart")
 public class CartController {
     @Autowired
@@ -97,5 +100,10 @@ public class CartController {
     public ResponseEntity<Double> getTotalAmount(@PathVariable Long cartId) {
         double totalAmount = cartService.getTotalAmount(cartId);
         return ResponseEntity.ok(totalAmount);
+    }
+
+    @GetMapping("/{cartId}/productsAndQuantities")
+    public List<ProductWithQuantityDto> getProductsAndQuantitiesInCart(@PathVariable Long cartId) {
+        return cartService.getProductsAndQuantities(cartId);
     }
 }

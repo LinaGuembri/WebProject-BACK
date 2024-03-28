@@ -2,6 +2,7 @@ package com.example.web_project.Service;
 
 import com.example.web_project.Entity.Cart;
 import com.example.web_project.Entity.Product;
+import com.example.web_project.Entity.ProductWithQuantityDto;
 import com.example.web_project.Entity.User;
 import com.example.web_project.Repository.CartRepository;
 import com.example.web_project.Repository.ProductRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
@@ -136,6 +138,16 @@ public class CartService {
         }
 
         return totalAmount;
+    }
+
+    public List<ProductWithQuantityDto> getProductsAndQuantities(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            return cart.getProductQuantityMap().entrySet().stream()
+                    .map(entry -> new ProductWithQuantityDto(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
     }
 
 }
