@@ -7,11 +7,13 @@ import com.example.web_project.Repository.CartRepository;
 import com.example.web_project.Repository.ProductRepository;
 import com.example.web_project.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -23,6 +25,9 @@ public class CartService {
 
     @Autowired
     private UserRepository userDao;
+
+    @Autowired
+    CartRepository cartRepository;
 
 
 
@@ -78,6 +83,59 @@ public class CartService {
         List<Cart> carts = new ArrayList<>();
         iterable.forEach(carts::add);
         return carts;
+    }
+
+    public List<Product> findProductsByCartId(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            return new ArrayList<>(cart.getProductQuantityMap().keySet());
+        }
+        return Collections.emptyList();
+    }
+
+    public Cart findCartByUserId(Long userId) {
+        Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
+        return optionalCart.orElse(null);
+    }
+
+
+    public void updateCartQuantity(Long cartId, String productId, int quantity) {
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart != null) {
+            Map<Product, Integer> productQuantityMap = cart.getProductQuantityMap();
+            Product product = productDao.findById(productId).orElse(null);
+            if (product != null) {
+                productQuantityMap.put(product, quantity);
+                cart.setProductQuantityMap(productQuantityMap);
+                cartRepository.save(cart);
+            } else {
+                // Handle case where product is not found
+            }
+        } else {
+            // Handle case where cart is not found
+        }
+    }
+
+
+    public double getTotalAmount(Long cartId) {
+        // Retrieve the cart from the database
+        Cart cart = cartRepository.findById(cartId).orElse(null);
+        if (cart == null) {
+            // Handle the case where the cart does not exist
+            return 0.0;
+        }
+
+        // Initialize the total amount
+        double totalAmount = 0.0;
+
+        // Iterate over the cart items and sum up their prices
+        for (Map.Entry<Product, Integer> entry : cart.getProductQuantityMap().entrySet()) {
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+            totalAmount += product.getPrice() * quantity;
+        }
+
+        return totalAmount;
     }
 
 }

@@ -11,7 +11,6 @@ import java.util.List;
 public interface ProductRepository extends CrudRepository<Product, String> {
     public List<Product> findAll(Pageable pageable);
 
-    public List<Product> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
-            String key1, String key2, Pageable pageable
-    );
+    List<Product> findByCategory_IdCategory(Long categoryId);
+
 }

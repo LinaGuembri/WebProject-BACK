@@ -41,6 +41,7 @@ public class ProductService {
             existingProduct.setColor(updatedProduct.getColor());
             existingProduct.setBrand(updatedProduct.getBrand());
             existingProduct.setCategory(updatedProduct.getCategory());
+            existingProduct.setQuantity(updatedProduct.getQuantity());
             return productRepository.save(existingProduct);
         } else {
             return null;
@@ -71,21 +72,12 @@ public class ProductService {
         return compareProducts;
     }
 
-    public void removeFromCompare(Long productId) {
+    public void removeFromCompare(String productId) {
         compareProducts.removeIf(product -> product.getProductReference().equals(productId));
     }
-
-    // Method to get products by category
-    // Method to get products by category
-    public List<Product> getProductsByCategory(String categoryName) {
-        List<Product> productsByCategory = new ArrayList<>();
-        for (Product product : products) {
-            Category category = product.getCategory();
-            if (category != null && category.getCategoryName().equalsIgnoreCase(categoryName)) {
-                productsByCategory.add(product);
-            }
-        }
-        return productsByCategory;
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        return productRepository.findByCategory_IdCategory(categoryId);
     }
+
 
 }

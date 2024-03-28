@@ -63,4 +63,39 @@ public class CartController {
         }
     }
 
+    @GetMapping("/{cartId}/products")
+    public ResponseEntity<List<Product>> getProductsInCart(@PathVariable Long cartId) {
+        List<Product> products = cartService.findProductsByCartId(cartId);
+        if (!products.isEmpty()) {
+            return ResponseEntity.ok(products);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Cart> getCartByUserId(@PathVariable Long userId) {
+        Cart cart = cartService.findCartByUserId(userId);
+        if (cart != null) {
+            return ResponseEntity.ok(cart);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{cartId}/product/{productId}")
+    public ResponseEntity<Void> updateCartQuantity(
+            @PathVariable Long cartId,
+            @PathVariable String productId,
+            @RequestParam int quantity
+    ) {
+        cartService.updateCartQuantity(cartId, productId, quantity);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{cartId}/total")
+    public ResponseEntity<Double> getTotalAmount(@PathVariable Long cartId) {
+        double totalAmount = cartService.getTotalAmount(cartId);
+        return ResponseEntity.ok(totalAmount);
+    }
 }

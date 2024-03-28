@@ -19,11 +19,9 @@ public class Product {
     private String description;
 
     private String image;
-
-
-
     private double price;
     private String color;
+    int quantity;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -100,5 +98,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

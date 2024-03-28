@@ -3,6 +3,7 @@ package com.example.web_project.Controller;
 import com.example.web_project.Entity.Product;
 import com.example.web_project.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,16 +59,32 @@ public class ProductController {
     }
 
     @DeleteMapping("/compare/{productId}")
-    public ResponseEntity<Void> removeFromCompare(@PathVariable Long productId) {
+    public ResponseEntity<Void> removeFromCompare(@PathVariable String productId) {
         productService.removeFromCompare(productId);
         return ResponseEntity.noContent().build();
     }
-    // New endpoint to get products by category
-    @GetMapping("/category/{categoryName}")
-    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable String categoryName) {
-        List<Product> products = productService.getProductsByCategory(categoryName);
-        return ResponseEntity.ok(products);
+
+    @GetMapping("/products/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategoryId(@PathVariable Long categoryId) {
+        List<Product> products = productService.getProductsByCategoryId(categoryId);
+        if (products.isEmpty()) {
+            return ResponseEntity.notFound().build(); // Return 404 if no products found
+        } else {
+            return ResponseEntity.ok(products); // Return products if found
+        }
     }
+
+
+    @GetMapping("/compare")
+    public ResponseEntity<List<Product>> getComparedProducts() {
+        List<Product> comparedProducts = productService.getCompareProducts();
+        if (comparedProducts != null && !comparedProducts.isEmpty()) {
+            return ResponseEntity.ok(comparedProducts);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+    }
+
 
 
 }
