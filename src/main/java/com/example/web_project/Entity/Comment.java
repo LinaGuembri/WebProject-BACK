@@ -1,6 +1,9 @@
 package com.example.web_project.Entity;
 
-import javax.persistence.*;
+
+
+import jakarta.persistence.*;
+import java.time.Instant;
 
 
 @Entity
@@ -10,13 +13,18 @@ public class Comment {
     private Long id;
 
     private String content;
+    private Instant created_on;
+
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "blog_id")
+    @JoinColumn(name = "blog_id", nullable = false)
+
     private Blog blog;
 
     // Constructors, getters, and setters
@@ -57,5 +65,12 @@ public class Comment {
 
     public void setBlog(Blog blog) {
         this.blog = blog;
+    }
+    public Instant getCreated_on() {
+        return created_on;
+    }
+
+    public void setCreated_on(Instant created_on) {
+        this.created_on = created_on;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.web_project.Entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class OrderDetail {

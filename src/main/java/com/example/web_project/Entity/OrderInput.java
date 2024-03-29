@@ -1,6 +1,6 @@
 package com.example.web_project.Entity;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import java.util.List;
 
 public class OrderInput {
