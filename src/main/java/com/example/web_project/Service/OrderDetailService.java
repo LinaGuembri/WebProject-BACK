@@ -10,6 +10,7 @@ import com.example.web_project.Repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -101,6 +102,10 @@ public class OrderDetailService {
             totalAmount += product.getPrice() * quantity;
         }
         return totalAmount;
+    }
+
+    public List<OrderDetail> getOrdersByUserId(Long userId) {
+        return orderDetailRepository.findByUserId(userId);
     }
 
 }

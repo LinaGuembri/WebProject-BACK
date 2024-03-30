@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/checkout")
 public class CheckoutController {
     @Autowired
@@ -25,5 +28,9 @@ public class CheckoutController {
     }
 
 
+    @GetMapping("/orders/{userId}")
+    public List<OrderDetail> getOrdersByUserId(@PathVariable Long userId) {
+        return orderDetailService.getOrdersByUserId(userId);
+    }
 
 }
