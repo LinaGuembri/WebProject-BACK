@@ -31,6 +31,15 @@ public class ProductService {
         return optionalProduct.orElse(null);
     }
 
+    public int getProductQuantity(String productReference) {
+        Product product = productRepository.findByProductReference(productReference);
+        if (product != null) {
+            return product.getQuantity();
+        } else {
+            return 0; // Return 0 or any default value if product not found
+        }
+    }
+
     public Product updateProduct(String productReference, Product updatedProduct) {
         Product existingProduct = productRepository.findById(productReference).orElse(null);
         if (existingProduct != null) {

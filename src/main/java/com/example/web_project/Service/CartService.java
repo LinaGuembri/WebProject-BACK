@@ -40,7 +40,6 @@ public class CartService {
         if (product == null || user == null) {
             return null;
         }
-
         List<Cart> carts = cartDao.findByUser(user);
         Cart cart;
         if (!carts.isEmpty()) {
@@ -48,8 +47,6 @@ public class CartService {
         } else {
             cart = new Cart(user);
         }
-        //cart.addProduct(product);
-        // Update or add the product with quantity to the cart
         cart.addProductWithQuantity(product, quantity);
         return cartDao.save(cart);
     }

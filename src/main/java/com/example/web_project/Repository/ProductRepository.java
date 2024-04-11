@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, String> {
     public List<Product> findAll(Pageable pageable);
+    Product findByProductReference(String productReference);
 
     List<Product> findByCategory_IdCategory(Long categoryId);
 

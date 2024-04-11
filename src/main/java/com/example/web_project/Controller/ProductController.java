@@ -33,6 +33,12 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/{productReference}/quantity")
+    public ResponseEntity<Integer> getProductQuantity(@PathVariable String productReference) {
+        int quantity = productService.getProductQuantity(productReference);
+        return ResponseEntity.ok(quantity);
+    }
+
     // New endpoint to add a product to the comparison list
     @PostMapping("/compare/add")
     public ResponseEntity<String> addToCompare(@RequestBody Product product) {
