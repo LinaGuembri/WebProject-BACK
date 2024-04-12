@@ -58,7 +58,7 @@ public class ProductService {
     }
 
     // New method to add a product to the comparison list
-    
+
     public boolean addToCompare(Product product) {
         if (compareProducts.contains(product)) {
             return false; // Product already exists in comparison list
