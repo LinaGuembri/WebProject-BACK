@@ -11,6 +11,7 @@ import com.example.web_project.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -124,6 +125,13 @@ public class OrderDetailService {
 
     public List<OrderDetail> getOrdersByUserId(Long userId) {
         return orderDetailRepository.findByUserId(userId);
+    }
+
+    public List<OrderDetail> getAllOrders() {
+        Iterable<OrderDetail> iterable = orderDetailRepository.findAll();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        iterable.forEach(orderDetails::add);
+        return orderDetails;
     }
 
 }

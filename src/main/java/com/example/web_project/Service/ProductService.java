@@ -6,14 +6,14 @@ import com.example.web_project.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
     @Autowired
     private ProductRepository productRepository;
+
+    private Map<Product, Integer> comparisonList = new HashMap<>();
 
     private List<Product> compareProducts = new ArrayList<>();
     private List<Product> products = new ArrayList<>();
@@ -58,6 +58,7 @@ public class ProductService {
     }
 
     // New method to add a product to the comparison list
+    
     public boolean addToCompare(Product product) {
         if (compareProducts.contains(product)) {
             return false; // Product already exists in comparison list
@@ -66,7 +67,8 @@ public class ProductService {
         return true; // Product added to comparison list
     }
 
-    // New method to check if a product exists in the comparison list
+
+
     public boolean hasProductInCompare(Long productId) {
         for (Product product : compareProducts) {
             if (product.getProductReference().equals(productId)) {

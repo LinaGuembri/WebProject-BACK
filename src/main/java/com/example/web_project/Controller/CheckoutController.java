@@ -33,4 +33,9 @@ public class CheckoutController {
         return orderDetailService.getOrdersByUserId(userId);
     }
 
+    @GetMapping("/orders")
+    public List<OrderDetail> getAllOrders() {
+        return orderDetailService.getAllOrders();
+    }
+
 }

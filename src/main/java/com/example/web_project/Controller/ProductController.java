@@ -1,6 +1,7 @@
 package com.example.web_project.Controller;
 
 import com.example.web_project.Entity.Product;
+import com.example.web_project.Entity.ProductWithQuantityDto;
 import com.example.web_project.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class ProductController {
         return ResponseEntity.ok(quantity);
     }
 
-    // New endpoint to add a product to the comparison list
+
     @PostMapping("/compare/add")
     public ResponseEntity<String> addToCompare(@RequestBody Product product) {
         boolean added = productService.addToCompare(product);
@@ -50,14 +51,16 @@ public class ProductController {
         }
     }
 
-    // New endpoint to check if a product exists in the comparison list
+
+
+
     @GetMapping("/compare/check/{productId}")
     public ResponseEntity<Boolean> hasProductInCompare(@PathVariable Long productId) {
         boolean exists = productService.hasProductInCompare(productId);
         return ResponseEntity.ok(exists);
     }
 
-    // New endpoint to retrieve the comparison list
+
     @GetMapping("/compare/list")
     public ResponseEntity<List<Product>> getCompareProducts() {
         List<Product> compareProducts = productService.getCompareProducts();

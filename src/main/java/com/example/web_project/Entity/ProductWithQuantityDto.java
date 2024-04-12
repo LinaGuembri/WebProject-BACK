@@ -7,17 +7,17 @@ public class ProductWithQuantityDto {
 
     private Product product;
     private int quantity;
-    // Default constructor
+
     public ProductWithQuantityDto() {
     }
 
-    // Constructor with arguments
+
     public ProductWithQuantityDto(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    // Getters and setters
+
     public Product getProduct() {
         return product;
     }
