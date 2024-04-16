@@ -36,7 +36,6 @@ public class BlogService {
     }
 
     public List<Blog> searchByTitle(String name){
-
         return blogRepository.findAllByTitle(name);
     }
 

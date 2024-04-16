@@ -44,7 +44,6 @@ public class BlogController {
    @GetMapping("/search/{title}")
     public ResponseEntity<?>  searchByTitle(@PathVariable String title){
         try{
-
             return ResponseEntity.status(HttpStatus.OK).body(blogService.searchByTitle(title));
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
