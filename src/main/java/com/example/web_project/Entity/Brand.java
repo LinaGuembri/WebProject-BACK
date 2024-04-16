@@ -11,8 +11,8 @@ import java.util.List;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idBrand")
 public class Brand {
     @Id
-    @Column(length = 50, unique = true)
-    private String idBrand;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idBrand;
     @Column(unique = true)
     private String brandName;
 
@@ -20,11 +20,11 @@ public class Brand {
     @JsonIdentityReference(alwaysAsId = true)
     private List<Product> products;
 
-    public String getIdBrand() {
+    public Long getIdBrand() {
         return idBrand;
     }
 
-    public void setIdBrand(String idBrand) {
+    public void setIdBrand(Long idBrand) {
         this.idBrand = idBrand;
     }
 
