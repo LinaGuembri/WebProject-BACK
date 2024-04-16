@@ -32,5 +32,8 @@ public class CheckoutController {
     public List<OrderDetail> getOrdersByUserId(@PathVariable Long userId) {
         return orderDetailService.getOrdersByUserId(userId);
     }
-
+    @GetMapping("/orders")
+    public List<OrderDetail> getAllOrders() {
+        return orderDetailService.getAllOrders();
+    }
 }

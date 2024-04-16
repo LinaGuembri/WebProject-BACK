@@ -46,11 +46,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    /*@PostMapping
-    public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
-    }*/
+
 
     @GetMapping("/{productReference}")
     public ResponseEntity<Product> getProductByReference(@PathVariable("productReference") String productReference) {
@@ -58,11 +54,7 @@ public class ProductController {
         return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
     }
 
-    /*@PutMapping("/{productReference}")
-    public ResponseEntity<Product> updateProduct(@PathVariable("productReference") String productReference, @Valid @RequestBody Product product) {
-        Product updatedProduct = productService.updateProduct(productReference, product);
-        return updatedProduct != null ? ResponseEntity.ok(updatedProduct) : ResponseEntity.notFound().build();
-    }*/
+
 
 
 

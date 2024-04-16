@@ -10,6 +10,7 @@ import com.example.web_project.Repository.OrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,38 +25,7 @@ public class OrderDetailService {
 
     @Autowired
     DeliveryRepository deliveryRepository;
-    /*
-    public OrderDetail checkout(Long userId, Long cartId, Delivery delivery) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        if (!optionalCart.isPresent()) {
-            return null; // Handle cart not found
-        }
-        Cart cart = optionalCart.get();
 
-        // Validate cart ownership
-        if (!cart.getUser().getId().equals(userId)) {
-            return null; // Handle unauthorized access
-        }
-
-        // Save or update delivery information
-        Delivery savedDelivery = deliveryRepository.save(delivery);
-
-        // Create order detail
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setUser(cart.getUser());
-        orderDetail.setOrderAmount(calculateOrderAmount(cart));
-        orderDetail.setOrderStatus("Pending");
-        orderDetail.setDelivery(savedDelivery); // Associate the saved delivery
-
-        // Save order detail
-        orderDetail = orderDetailRepository.save(orderDetail);
-
-        // Optionally, clear the cart after checkout
-        cart.getProductQuantityMap().clear();
-        cartRepository.save(cart);
-
-        return orderDetail;
-    } */
 
     public OrderDetail checkout(Long userId, Long cartId, Delivery delivery) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
@@ -103,7 +73,12 @@ public class OrderDetailService {
         }
         return totalAmount;
     }
-
+    public List<OrderDetail> getAllOrders() {
+        Iterable<OrderDetail> iterable = orderDetailRepository.findAll();
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        iterable.forEach(orderDetails::add);
+        return orderDetails;
+    }
     public List<OrderDetail> getOrdersByUserId(Long userId) {
         return orderDetailRepository.findByUserId(userId);
     }
