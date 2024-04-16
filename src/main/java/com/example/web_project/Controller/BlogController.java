@@ -53,15 +53,12 @@ public class BlogController {
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getBlogImageById(@PathVariable("id") Long id) {
         byte[] image = blogService.getBlogImageById(id);
-        // Check if image data is found
         if (image != null && image.length > 0) {
-            // If image data is found, return it with appropriate headers
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentLength(image.length);
             return new ResponseEntity<>(image, headers, HttpStatus.OK);
         } else {
-            // If image data is not found, return 404 Not Found
             return ResponseEntity.notFound().build();
         }
     }
