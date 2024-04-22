@@ -2,6 +2,7 @@ package com.example.web_project.Controller;
 
 import com.example.web_project.Entity.Delivery;
 import com.example.web_project.Entity.OrderDetail;
+import com.example.web_project.Repository.OrderDetailRepository;
 import com.example.web_project.Service.order.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CheckoutController {
     @Autowired
     private OrderDetailService orderDetailService;
+    private OrderDetailRepository orderDetailRepository;
 
     @PostMapping("/process")
     public ResponseEntity<OrderDetail> checkout(@RequestParam Long userId, @RequestParam Long cartId, @RequestBody Delivery delivery) {
@@ -36,4 +38,15 @@ public class CheckoutController {
     public List<OrderDetail> getAllOrders() {
         return orderDetailService.getAllOrders();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderDetail> updateOrderDetail(@PathVariable Long id, @RequestBody OrderDetail orderDetail) {
+        OrderDetail updatedOrderDetail = orderDetailService.updateOrderDetail(id, orderDetail);
+        if (updatedOrderDetail != null) {
+            return ResponseEntity.ok(updatedOrderDetail);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

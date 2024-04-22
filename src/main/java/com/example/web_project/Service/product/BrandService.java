@@ -48,4 +48,3 @@ public class BrandService {
         return brandRepository.findById(id);
     }
 }
-

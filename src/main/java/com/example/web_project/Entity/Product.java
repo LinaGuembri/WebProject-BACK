@@ -116,6 +116,7 @@ public class Product {
     @Column(length = 50, unique = true)
     private String productReference;
     private String name;
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     @Lob
     private String image;

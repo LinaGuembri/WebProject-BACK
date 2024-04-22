@@ -8,6 +8,7 @@ import com.example.web_project.Repository.PasswordResetTokenRepository;
 import com.example.web_project.Repository.UserRepository;
 import com.example.web_project.Repository.VerificationTokenRepository;
 import com.example.web_project.Service.ResetPassword.PasswordResetTokenService;
+import com.example.web_project.Service.ResourceNotFoundException;
 import com.example.web_project.Service.user.UserService;
 import com.example.web_project.Utils.Jwtutil;
 import com.example.web_project.event.RegistrationCompleteEvent;
@@ -48,7 +49,7 @@ public class UserController {
     @PostMapping("/sign-up")
     public ResponseEntity<?> signupUser(@RequestBody SignupDTO signupDTO, final HttpServletRequest request) {
         if (userService.hasUserWithEmail(signupDTO.getEmail())) {
-            return new ResponseEntity<>("User already exist" + signupDTO.getEmail(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("User with this email already exist: " + signupDTO.getEmail(), HttpStatus.NOT_ACCEPTABLE);
         }
         User createdUser = userService.createUser(signupDTO);
         publisher.publishEvent(new RegistrationCompleteEvent(createdUser, applicationUrl(request)));
@@ -186,11 +187,24 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
-        User updatedUser = userService.updateUser(id, user);
-        if(updatedUser == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<Map<String, String>> updateUser(@PathVariable Long id, @RequestBody User user) {
+        try {
+            User updatedUser = userService.updateUser(id, user);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Your information has been successfully updated.");
+            return ResponseEntity.ok(response);
+        } catch (ResourceNotFoundException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "An error occurred while updating the user.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
+
+
 
     @PutMapping("/user/disable/{id}")
     public ResponseEntity<Map<String, String>> disableUserAccount(@PathVariable Long id) {

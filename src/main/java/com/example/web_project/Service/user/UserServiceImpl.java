@@ -120,13 +120,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public User updateUser(Long id, User user) {
         Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
-            existingUser.setEmail(user.getEmail());
             existingUser.setFirstname(user.getFirstname());
             existingUser.setLastname(user.getLastname());
             existingUser.setTelephone(user.getTelephone());
-            existingUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                existingUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            }
             return userRepository.save(existingUser);
         }
         return null;

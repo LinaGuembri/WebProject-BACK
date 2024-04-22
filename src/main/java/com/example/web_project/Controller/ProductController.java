@@ -1,4 +1,3 @@
-
 package com.example.web_project.Controller;
 import com.example.web_project.Entity.Brand;
 import com.example.web_project.Entity.Category;
@@ -131,7 +130,6 @@ public class ProductController {
             String timestamp = Long.toString(System.currentTimeMillis());
 
             String destinationPath = "C:\\Users\\manou\\IdeaProjects\\ProjetWeb\\front\\ecommerce-sophia-new\\src\\assets\\images\\products\\";
-
             String newFilename = timestamp + "_" + file.getOriginalFilename();
 
             file.transferTo(new File(destinationPath + newFilename));
@@ -212,6 +210,10 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+        List<Product> searchResults = productService.searchProducts(keyword);
+        return ResponseEntity.ok(searchResults);
+    }
 
 }

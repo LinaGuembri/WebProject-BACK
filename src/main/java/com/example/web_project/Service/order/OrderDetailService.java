@@ -7,6 +7,7 @@ import com.example.web_project.Entity.Product;
 import com.example.web_project.Repository.CartRepository;
 import com.example.web_project.Repository.DeliveryRepository;
 import com.example.web_project.Repository.OrderDetailRepository;
+import com.example.web_project.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,38 +27,42 @@ public class OrderDetailService {
     @Autowired
     DeliveryRepository deliveryRepository;
 
+    @Autowired
+    ProductRepository productRepository;
 
     public OrderDetail checkout(Long userId, Long cartId, Delivery delivery) {
         Optional<Cart> optionalCart = cartRepository.findById(cartId);
         if (!optionalCart.isPresent()) {
-            return null; // Handle cart not found
+            return null;
         }
         Cart cart = optionalCart.get();
 
-        // Validate cart ownership
         if (!cart.getUser().getId().equals(userId)) {
-            return null; // Handle unauthorized access
+            return null;
         }
 
-        // Ensure delivery information is provided
         if (delivery == null || delivery.getAddress() == null || delivery.getContactNumber() == null) {
-            return null; // Handle incomplete delivery information
+            return null;
         }
 
-        // Create order detail
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setUser(cart.getUser());
         orderDetail.setOrderAmount(calculateOrderAmount(cart));
         orderDetail.setOrderStatus("Pending");
 
-        // Save or update delivery information
         Delivery savedDelivery = deliveryRepository.save(delivery);
-        orderDetail.setDelivery(savedDelivery); // Associate the saved delivery
+        orderDetail.setDelivery(savedDelivery);
 
-        // Save order detail
         orderDetail = orderDetailRepository.save(orderDetail);
 
-        // Optionally, clear the cart after checkout
+        for (Map.Entry<Product, Integer> entry : cart.getProductQuantityMap().entrySet()) {
+            Product product = entry.getKey();
+            Integer quantityOrdered = entry.getValue();
+            Long remainingStock = product.getQuantity() - quantityOrdered;
+            product.setQuantity(remainingStock);
+            productRepository.save(product);
+        }
+
         cart.getProductQuantityMap().clear();
         cartRepository.save(cart);
 
@@ -83,4 +88,12 @@ public class OrderDetailService {
         return orderDetailRepository.findByUserId(userId);
     }
 
+    public OrderDetail updateOrderDetail(Long id, OrderDetail updatedOrderDetail) {
+        OrderDetail existingOrderDetail = orderDetailRepository.findById(id).orElse(null);
+        if (existingOrderDetail == null) {
+            return null;
+        }
+        existingOrderDetail.setOrderStatus(updatedOrderDetail.getOrderStatus());
+        return orderDetailRepository.save(existingOrderDetail);
+    }
 }
