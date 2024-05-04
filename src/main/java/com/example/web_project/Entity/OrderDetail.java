@@ -9,7 +9,7 @@ public class OrderDetail {
     private Long orderId;
     private String orderStatus;
     private Double orderAmount;
-    @OneToOne
+    @ManyToOne
     private User user;
     @OneToOne
     private Delivery delivery;
