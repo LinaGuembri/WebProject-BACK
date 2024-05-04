@@ -48,7 +48,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
                 "<p> Thank you <br> Users Registration Portal Service";
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("bascht2@gmail.com", senderName);
+        messageHelper.setFrom("VOTRE_EMAIL", senderName);
         messageHelper.setTo(theUser.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
@@ -65,7 +65,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
                 "<p> Users Registration Portal Service";
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
-        messageHelper.setFrom("bascht2@gmail.com", senderName);
+        messageHelper.setFrom("VOTRE_EMAIL", senderName);
         messageHelper.setTo(theUser.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
