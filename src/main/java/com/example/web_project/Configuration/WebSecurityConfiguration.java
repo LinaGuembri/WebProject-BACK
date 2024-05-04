@@ -26,20 +26,6 @@ public class WebSecurityConfiguration {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
-   /* @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/authenticate", "/sign-up").permitAll()
-                .and()
-                .authorizeRequests().requestMatchers("/api/**")
-                .authenticated().and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }*/
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
